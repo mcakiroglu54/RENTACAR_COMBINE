@@ -1,0 +1,53 @@
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RunnerForSearch {
+
+	public static void main(String[] args) {
+		Map<String, Car> carInventory = new HashMap<>();
+		
+		Car c1 = new Car("Toyota","Yaris");
+		Car c2 =new Car("Toyota","Camry");
+		Car c3 =new Car("Toyota","Camry");
+		Car c4 =new Car("Toyota","Corolla");
+		Car c5 =new Car("Toyota","Corolla");
+		Car c6 =new Car("Honda","CRV");
+		Car c7 =new Car("Honda","CRV");
+		Car c8 =new Car("Honda","Accord");
+		Car c9 =new Car("Honda","Accord");
+		Car c10 =new Car("Honda","Civic");
+		Car c11 =new Car("Ford","Focus");
+		Car c12 =new Car("Ford","Focus");
+		Car c13 =new Car("Ford","F150");
+		Car c14 =new Car("Ford","F150");
+		Car c15 =new Car("Ford","F150");
+		
+			carInventory.put(c1.getCarId(), c1);
+			carInventory.put(c2.getCarId(), c2);
+			carInventory.put(c3.getCarId(), c3);
+			carInventory.put(c4.getCarId(), c4);
+			carInventory.put(c5.getCarId(), c5);
+			carInventory.put(c6.getCarId(), c6);
+			carInventory.put(c7.getCarId(), c7);
+			carInventory.put(c8.getCarId(), c8);
+			carInventory.put(c9.getCarId(), c9);
+			carInventory.put(c10.getCarId(), c10);
+			carInventory.put(c11.getCarId(), c11);
+			carInventory.put(c12.getCarId(), c12);
+			carInventory.put(c13.getCarId(), c13);
+			carInventory.put(c14.getCarId(), c14);
+			carInventory.put(c15.getCarId(), c15);
+			
+			System.out.println(carInventory.getClass());
+		
+			Search s1 = new Search();
+			Map<String, Car> carInventoryFilterByModel = new HashMap<>();
+			carInventoryFilterByModel = s1.searchByCar("F150",carInventory);
+		
+			System.out.println(carInventoryFilterByModel);
+
+		
+	}
+
+}
