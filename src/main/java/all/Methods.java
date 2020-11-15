@@ -7,7 +7,10 @@ import java.util.Scanner;
 
 public class Methods {
 
+
 	public void menu() {
+		Account account = new Account();
+
 		Scanner scan = new Scanner(System.in);
 		System.out.println("**********************************************************");
 		System.out.println("***************  TECHPRO RENT A CAR   ********************");
@@ -24,11 +27,11 @@ public class Methods {
 		switch (option) {
 		
 			case "1":
-				createAccount();
+				account.create();
 				break;
 			
 			case "2":
-				deleteAccount();
+				account.delete();
 				break;
 
 			case "3":
@@ -49,6 +52,7 @@ public class Methods {
 	}
 
 	public void createReservation() {
+		Account account = new Account();
 		String ssn=null;
 		Customer customer = new Customer();
 		Scanner scan = new Scanner(System.in);
@@ -56,7 +60,7 @@ public class Methods {
 
 		System.out.println("Do you have an account? Y/N");
 		if(scan.next().equalsIgnoreCase("Y")) {
-			ssn = enterValidSSN(customer);
+			ssn = account.enterValidSSN(customer);
 			if(ssn==null)
 				menu();
 			else if (customer.getCustomerBySSN(ssn) == null) {
@@ -67,7 +71,7 @@ public class Methods {
 				System.out.println("You login the system as "+ssn);
 			}
 		}else {
-			createAccount();
+			account.create();
 		}
 
 		do{
@@ -117,157 +121,4 @@ public class Methods {
 		}
 
 	}
-
-	public void deleteAccount() {
-		String ssn;
-		Scanner scan = new Scanner(System.in);
-		Customer deleteCustomer = new Customer();
-		System.out.println("**********************************************)");
-		System.out.println("************   DELETE AN ACCOUNT  ************)");
-		System.out.println("**********************************************)");
-
-		ssn=enterValidSSN(deleteCustomer);
-		if(ssn == null)
-			menu();
-
-		deleteCustomer=deleteCustomer.getCustomerBySSN(ssn);
-			
-		if (deleteCustomer==null) {
-			System.out.println("The Account doesnt exist");
-			menu();
-		}
-
-		if(!enterPassword(deleteCustomer)) {
-			menu();
-		}
-		else{
-			deleteCustomer.removeCustomerBySSN(ssn);
-			menu();
-		}
-	}
-
-	public void createAccount() {
-		Scanner scan = new Scanner(System.in);
-		Customer newCustomer = new Customer();
-		String ssn;
-		System.out.println("**********************************************)");
-		System.out.println("************   CREATE AN ACCOUNT  ************)");
-		System.out.println("**********************************************)");
-		do {
-			ssn= enterValidSSN(newCustomer);
-			if(ssn==null)
-				menu();
-
-			newCustomer.setSSN(ssn);
-			if (newCustomer.isCustomerExist()) {
-				System.out.println("Customer "+ssn+ " is already exist");
-				System.out.println("Do you want to re-enter. Y/N?");
-				if(scan.next().equalsIgnoreCase("N"))
-					menu();
-			}
-
-		}while(newCustomer.isCustomerExist());
-		createPasswordAndNames(newCustomer);
-		enterCardNumber(newCustomer,"creditCard");
-		enterCardNumber(newCustomer,"CVV");
-		enterCardNamesAndDates(newCustomer);
-		newCustomer.addCustomer();
-		menu();
-	}
-	public void createPasswordAndNames(Customer customer){
-		Scanner scan = new Scanner(System.in);
-		String password;
-		String firstName,lastName;
-
-		System.out.println("Please Create your password ");
-		password= scan.next();
-		customer.setPassword(password);
-
-		System.out.println("Please Enter your First Name:");
-		firstName= scan.next();
-		System.out.println("Please Enter your Last Name:");
-		lastName= scan.next();
-		customer.setFirstName(firstName);
-		customer.setLastName(lastName);
-	}
-	public boolean enterPassword(Customer customer){
-		Scanner scan = new Scanner(System.in);
-		int trial=0;
-		String password;
-		do {
-			System.out.println("\nPlease enter your PASSWORD");
-			password = scan.next();
-			if (!password.equals(customer.getPassword())) {
-				System.out.println("The Password incorrect");
-				trial++;
-			}
-			if(trial>3) {
-				System.out.println("You entered too much incorrect Password");
-				System.out.println("You will be routed to main menu");
-				return false;
-			}
-		}while(!password.equals(customer.getPassword()));
-		return true;
-	}
-
-	public void enterCardNumber(Customer customer ,String type ){
-		String number;
-		Scanner scan = new Scanner(System.in);
-		do {
-			System.out.println("Please Enter your "+type+" Number:");
-			number = scan.next();
-			if (!customer.creditCard.isValid(number,type)) {
-				System.out.println("Please Enter Correct "+type+ " Number or to Exit enter Q");
-				number = scan.next();
-				if (number.equalsIgnoreCase("q")) {
-					menu();
-				}
-			}
-		}while(!customer.creditCard.isValid(number,type));
-		if (type.equalsIgnoreCase("creditCard"))
-			customer.creditCard.setCardNumber(number);
-		else if (type.equalsIgnoreCase("CVV"))
-			customer.creditCard.setCvvCode(number);
-	}
-
-	public void enterCardNamesAndDates(Customer customer){
-		Scanner scan = new Scanner(System.in);
-		String cardFullName;
-		String expDate=null;
-
-		/* HUSNA HANIM BUNU DÜZELTEBİLİR MİSİNİZ?
-		int expiryMonth=1;
-		int expiryYear=1;
-		do {
-			System.out.println("Please enter expritation Month/Year of your card:");
-			expDate = scan.next();
-			customer.creditCard.setExpDate(expDate);
-			if (expiryMonth < 1 || expiryMonth > 12) {
-				System.out.println("Please Enter Correct Month");
-			}
-		}while(expiryMonth < 1 || expiryMonth > 12);
-		*/
-		System.out.println("Please enter Card Name");
-		cardFullName = scan.next();
-	//	customer.creditCard.setExpDate(expDate);
-		customer.creditCard.setFullName(cardFullName);
-	}
-
-	public String enterValidSSN(Customer customer) {
-		Scanner scan = new Scanner(System.in);
-		String ssn;
-		do {
-			System.out.println("Please enter your SSN as 11 Digit with hypen(-)");
-			ssn= scan.next();
-			if (!customer.isSSNValid(ssn)) {
-				System.out.println("Please Enter Correct SSN or to exist Enter Q");
-				ssn = scan.next();
-				if (ssn.equalsIgnoreCase("q"))
-					return null;
-			}
-		}while(!customer.isSSNValid(ssn)) ;
-		return ssn;
-	}
-
-
 }
