@@ -53,23 +53,24 @@ public class Methods {
 		Customer customer = new Customer();
 		Scanner scan = new Scanner(System.in);
 		Date returnDate,pickUpDate;
-/*
+
 		System.out.println("Do you have an account? Y/N");
 		if(scan.next().equalsIgnoreCase("Y")) {
 			ssn = enterValidSSN(customer);
 			if(ssn==null)
 				menu();
-			else if (Customer.getCustomerBySSN(ssn) == null) {
+			else if (customer.getCustomerBySSN(ssn) == null) {
 				System.out.println(ssn + "account doesn't exist ");
 				menu();
 			} else{
-				customer = Customer.getCustomerBySSN(ssn);
+				customer = customer.getCustomerBySSN(ssn);
 				System.out.println("You login the system as "+ssn);
 			}
 		}else {
 			createAccount();
 		}
-*/		do{
+
+		do{
 			System.out.println("Please enter your pick-up date");
 			pickUpDate = enterDate();
 			if(pickUpDate == null)
@@ -117,7 +118,6 @@ public class Methods {
 
 	}
 
-
 	public void deleteAccount() {
 		String ssn;
 		Scanner scan = new Scanner(System.in);
@@ -129,17 +129,19 @@ public class Methods {
 		ssn=enterValidSSN(deleteCustomer);
 		if(ssn == null)
 			menu();
-		deleteCustomer = Customer.getCustomerBySSN(ssn);
+
+		deleteCustomer=deleteCustomer.getCustomerBySSN(ssn);
 			
 		if (deleteCustomer==null) {
 			System.out.println("The Account doesnt exist");
 			menu();
 		}
 
-		if(!enterPassword(deleteCustomer))
+		if(!enterPassword(deleteCustomer)) {
 			menu();
+		}
 		else{
-			Customer.removeCustomerBySSN(ssn);
+			deleteCustomer.removeCustomerBySSN(ssn);
 			menu();
 		}
 	}
@@ -157,19 +159,19 @@ public class Methods {
 				menu();
 
 			newCustomer.setSSN(ssn);
-			if (Customer.isCustomerExist(newCustomer)) {
+			if (newCustomer.isCustomerExist()) {
 				System.out.println("Customer "+ssn+ " is already exist");
 				System.out.println("Do you want to re-enter. Y/N?");
 				if(scan.next().toUpperCase() == "N")
 					menu();
 			}
-		}while(Customer.isCustomerExist(newCustomer));
 
+		}while(newCustomer.isCustomerExist());
 		createPasswordAndNames(newCustomer);
 		enterCardNumber(newCustomer,"creditCard");
 		enterCardNumber(newCustomer,"CVV");
 		enterCardNamesAndDates(newCustomer);
-		Customer.addCustomer(newCustomer);
+		newCustomer.addCustomer();
 		menu();
 	}
 	public void createPasswordAndNames(Customer customer){

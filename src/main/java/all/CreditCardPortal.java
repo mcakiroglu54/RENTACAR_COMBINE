@@ -1,8 +1,9 @@
 package all;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class CreditCardPortal {
+public class CreditCardPortal implements Serializable {
 	/*
 	 * There should be a cardnumber that is 16 digit long
 	 * There should be full name of the card owner 
@@ -26,26 +27,6 @@ public class CreditCardPortal {
 		this.setFullName(fullName);
 		this.setCvvCode(cvvCode);
 	}
-	
-	//I created main for testing purposes
-	/*public static void main(String[] args) {
-		LocalDate currentDate = LocalDate.now();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM");
-		System.out.println(dtf.format(currentDate.minusMonths(9)));
-		
-		System.out.println("Year is valid?"+isValidexpDate("12","2020"));
-		CreditCardPortal obj = new CreditCardPortal();
-		obj.setExpDate("02/2023");
-		System.out.println("Date "+obj.getExpDate());
-		System.out.println("Month "+obj.getExpMonth());
-		System.out.println("Year "+obj.getExpYear());
-		obj.setExpDate("2/2023");
-		System.out.println("Date "+obj.getExpDate());
-		System.out.println("Month "+obj.getExpMonth());
-		System.out.println("Year "+obj.getExpYear());
-		CreditCardPortal obj2 = new CreditCardPortal("12345678909876","husna ucar","12/2020","123");
-		System.out.println(obj2);
-	}*/
 
 	/**
 	 * A valid Card Number has 16 digits, valid CVV has 3 digits.

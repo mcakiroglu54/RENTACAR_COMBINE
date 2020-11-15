@@ -8,13 +8,13 @@ public class Car {
 	private String  carClass;
 	private int numofSeat;
 	private int model;
-	private int make;
+	private String make;
 	private int carID;
 	private static int ID=1000;
 
 	protected static List<Car> carsList = new ArrayList<Car>();
 
-	public Car(String plate, String type, String carClass, int numofSeat, int model, int make) {
+	public Car(String plate, String type, String carClass, int numofSeat, int model, String make) {
 		this.plate = plate;
 		this.type = type;
 		this.carClass = carClass;
@@ -61,10 +61,10 @@ public class Car {
 	public void setModel(int model) {
 		this.model = model;
 	}
-	public int getMake() {
+	public String getMake() {
 		return make;
 	}
-	public void setMake(int make) {
+	public void setMake(int String) {
 		this.make = make;
 	}
 

@@ -1,8 +1,9 @@
 package all;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable {
 /*
   	There should be full name of the customer
 	There should be address information of a customer
@@ -16,8 +17,7 @@ public class Customer {
 	private String password;
 	protected CreditCardPortal creditCard;
 	protected Address address;
-
-	protected static List<Customer> customersList = new ArrayList<Customer>();
+	private static final String filepath="src/main/java/AllCustomers.txt";
 
 	public Customer(){
 		address = new Address();
@@ -63,6 +63,9 @@ public class Customer {
 		SSN = ssn;
 	}
 
+	public String toString() {
+		return firstName+" "+lastName+" "+" "+SSN+" "+password;
+	}
 	/*
 	 	The valid SSN (Social Security Number) must satisfy the following conditions:
 		It should have 9 digits.
@@ -91,32 +94,147 @@ public class Customer {
 		return true;
 	}
 
-	public static boolean isCustomerExist(Customer customer) {
-		return customersList.stream().anyMatch(t->t.getSSN().equals(customer.getSSN()));
-	}
-
-	public static void addCustomer(Customer customer) {
-		if(!isCustomerExist(customer))
-			customersList.add(customer);
-	}
-
-	public static Customer getCustomerBySSN(String SSN ) {
-		for(Customer w: customersList) {
-			if(w.getSSN().equals(SSN) ){
-				return w;
-			}
-		}
-		return null;
-	}
-
-	public static boolean removeCustomerBySSN(String SSN) {
-		for (Customer w : customersList) {
-			if (w.getSSN().equals(SSN)) {
-				customersList.remove(w);
-				System.out.println("Customer: " + SSN + " was removed:");
+	public boolean isCustomerExist() {
+		List<Customer> customerList = Customer.takeCustomerList();
+		for (Customer w : customerList) {
+			if (w.getSSN().equals(this.getSSN())) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	public void addCustomer() {
+		List<Customer> customerList = Customer.takeCustomerList();
+		for (Customer w : customerList) {
+			if (w.getSSN().equals(this.getSSN())) {
+				return;
+			}
+		}
+		customerList.add(this);
+		File file = new File(filepath);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException ex) {
+				System.out.println(ex);
+			}
+		}
+		ObjectOutputStream outputStream = null;
+		try {
+			outputStream = new ObjectOutputStream(new FileOutputStream(file));
+			for(Customer w: customerList) {
+				outputStream.writeObject(w);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					System.out.println(e);
+				}
+			}
+		}
+	}
+
+	public boolean removeCustomerBySSN(String SSN) {
+		List<Customer> customerList = Customer.takeCustomerList();
+		System.out.println(customerList);
+		System.out.println(this.getSSN());
+		boolean exist=false;
+		for (Customer w : customerList) {
+			System.out.println(w.getSSN());
+			if (w.getSSN().equals(SSN)) {
+				customerList.remove(w);
+				System.out.println("Customer: " + SSN + " was removed:");
+				exist=true;
+				break;
+			}
+		}
+		if(!exist) {
+			System.out.println("the customer doesn't exist");
+			return false;
+		}
+
+		// After removing an object we update the file by rewriting the list into that file.
+		ObjectOutputStream outputStream = null;
+		try {
+			outputStream = new ObjectOutputStream(new FileOutputStream(filepath));
+			for (Customer w : customerList) {
+				outputStream.writeObject(w);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					System.out.println(e);
+				}
+			}
+		}
+		return true;
+	}
+
+	public Customer getCustomerBySSN(String SSN) {
+		List<Customer> customerList = Customer.takeCustomerList();
+		for (Customer w : customerList) {
+			if (w.getSSN().equals(SSN)) {
+				return w;
+			}
+		}
+		return null;
+	}
+	public List<Customer> SearchByName(String name) {
+		List<Customer> customerList = Customer.takeCustomerList();
+		List<Customer> s = new ArrayList<>();
+		for (Customer w : customerList) {
+			if (w.getLastName().equalsIgnoreCase(name)) {
+				s.add(w);
+			}
+		}
+		return s;
+	}
+
+	public static List<Customer> takeCustomerList() {
+		List<Customer> CustomerList = new ArrayList<>();
+		ObjectInputStream inputStream = null;
+		try {
+			// open file for reading
+			inputStream = new ObjectInputStream(new FileInputStream(filepath));
+			boolean EOF = false;
+			// Keep reading file until file ends
+			while (!EOF) {
+				try {
+					Customer customer = (Customer) inputStream.readObject();
+					CustomerList.add(customer);
+				} catch (ClassNotFoundException e) {
+					System.out.println(e);
+				} catch (EOFException end) {
+					EOF = true;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (IOException e) {
+				System.out.println(e);
+			}
+		}
+		return CustomerList;
+	}
 }
+
