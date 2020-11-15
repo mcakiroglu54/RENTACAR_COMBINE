@@ -119,8 +119,8 @@ public class CreditCardPortal implements Serializable {
 			this.expYear = s[1];
 			this.expDate = expDate;
 		}
-		else
-			System.out.println("Please enter a valid expiration date.");
+	//	else
+		//	System.out.println("Please enter a valid expiration date.");
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class Customer implements Serializable {
 	private String password;
 	protected CreditCardPortal creditCard;
 	protected Address address;
-	private static final String filepath="src/main/java/AllCustomers.txt";
+	private static final String filepath="src/main/java/Customers.txt";
 
 	public Customer(){
 		address = new Address();

@@ -162,7 +162,7 @@ public class Methods {
 			if (newCustomer.isCustomerExist()) {
 				System.out.println("Customer "+ssn+ " is already exist");
 				System.out.println("Do you want to re-enter. Y/N?");
-				if(scan.next().toUpperCase() == "N")
+				if(scan.next().equalsIgnoreCase("N"))
 					menu();
 			}
 
