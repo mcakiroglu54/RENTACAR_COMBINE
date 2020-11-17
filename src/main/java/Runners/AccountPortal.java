@@ -1,18 +1,13 @@
 package Runners;
 import BasicClasses.Customer;
-
 import java.util.List;
 import java.util.Scanner;
 
 public class AccountPortal {
 
-    UserPortal userPortal = new UserPortal();
-    CreditCardPortal creditCardPortal = new CreditCardPortal();
-    AddressPortal addressPortal = new AddressPortal();
-    CustomerPortal customerPortal = new CustomerPortal();
-
     public void delete() {
-
+        UserPortal userPortal = new UserPortal();
+        CustomerPortal customerPortal = new CustomerPortal();
         Customer customer;
         System.out.println("************************************************************************");
         System.out.println("***************************  DELETE ACCOUNT   **************************");
@@ -31,7 +26,12 @@ public class AccountPortal {
 
     public void create() {
         Scanner scan = new Scanner(System.in);
+        UserPortal userPortal = new UserPortal();
         Customer customer = new Customer();
+        CreditCardPortal creditCardPortal = new CreditCardPortal();
+        AddressPortal addressPortal = new AddressPortal();
+        CustomerPortal customerPortal = new CustomerPortal();
+
         String ssn;
         System.out.println("************************************************************************");
         System.out.println("***************************  CREATE ACCOUNT   **************************");
@@ -62,6 +62,7 @@ public class AccountPortal {
 
     public void view() {
         Scanner scan = new Scanner(System.in);
+        UserPortal userPortal = new UserPortal();
         System.out.println("************************************************************************");
         System.out.println("***************************  VIEW ACCOUNT   ****************************");
         System.out.println("************************************************************************");
@@ -75,6 +76,7 @@ public class AccountPortal {
         userPortal.menu();
     }
     public void searchAccountByName() {
+        UserPortal userPortal = new UserPortal();
         String password;
         String fullName;
         List <Customer> nameList;
@@ -105,6 +107,8 @@ public class AccountPortal {
     }
 
     public void searchAccountBySsn() {
+        UserPortal userPortal = new UserPortal();
+        CustomerPortal customerPortal = new CustomerPortal();
         Scanner scan = new Scanner(System.in);
         Customer customer ;
         customer = customerPortal.checkCustomer();

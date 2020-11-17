@@ -15,13 +15,16 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ReservationPortal {
+
+
     Date pickUpDate;
     Date returnDate;
     UserPortal userPortal = new UserPortal();
-    CustomerPortal customerPortal = new CustomerPortal();
+
     AccountPortal accountPortal = new AccountPortal();
 
     public void create() {
+        CustomerPortal customerPortal = new CustomerPortal();
         Car selectedCar;
         Reservation reservation;
         String pickUpLocation;
@@ -60,27 +63,109 @@ public class ReservationPortal {
         }while(selectedCar == null);
         totalPrice = rentDay * selectedCar.getDailyPrice();
         reservation = new Reservation(customer,selectedCar, pickUpLocation, pickUpDate, returnDate,totalPrice);
-        reservation.add();
-        Reservation.printReservation();
+        reservation.addReservation();
+        System.out.println("Congrulation!!. Your Reservation was completed..");
+        reservation.getReserListByCustomer(customer);
+        userPortal.menu();
 
     }
 
     public void view() {
+        String option=null;
         Scanner scan = new Scanner(System.in);
         System.out.println("************************************************************************");
         System.out.println("***************************  VIEW RESERVATION   ****************************");
         System.out.println("************************************************************************");
         System.out.println("1-Search by Your SSN , 2-Search by Your Name, Q- Exit");
-    }
+        option = scan.next();
+        if (option.equals("1"))
+            searchAccountBySsn() ;
+        else if (option.equals("2"))
+            searchAccountByName();
 
-    public void delete() {
-        String ssn;
+        userPortal.menu();
+    }
+    public void searchAccountByName() {
+        UserPortal userPortal = new UserPortal();
+        Reservation reservation = new Reservation();
+        String password;
+        String fullName;
+        List <Customer> nameList;
         Scanner scan = new Scanner(System.in);
         Customer customer = new Customer();
-        System.out.println("************************************************************************");
-        System.out.println("***************************  DELETE RESERVATION   **************************");
-        System.out.println("************************************************************************");
+        do {
+            System.out.println("Enter your full name");
+            fullName = scan.nextLine();
+            nameList = customer.searchByName(fullName);
+            if (nameList.size() == 0) {
+                System.out.println(fullName + "'s account doesn't exist");
+                System.out.println("Please Re-Enter your Full Name or Type Q to exit");
+                if (scan.next().equalsIgnoreCase("Q"))
+                    userPortal.menu();
+            } else {
+                System.out.println("Please enter your password:");
+                password = scan.next();
+                for (Customer w : nameList) {
+                    if (w.getPassword().equals(password)) {
+                        reservation.getReserListByCustomer(w);
+                    }
+                }
+            }
+        }while(nameList.size() == 0);
     }
+
+    public void searchAccountBySsn() {
+        UserPortal userPortal = new UserPortal();
+        CustomerPortal customerPortal = new CustomerPortal();
+        Reservation reservation = new Reservation();
+        Scanner scan = new Scanner(System.in);
+        Customer customer ;
+        customer = customerPortal.checkCustomer();
+        if(customer==null)
+            userPortal.menu();
+        else if (!customerPortal.checkPassword(customer)) {
+            userPortal.menu();
+        } else {
+            reservation.getReserListByCustomer(customer);
+        }
+    }
+
+
+    public void delete() {
+        CustomerPortal customerPortal = new CustomerPortal();
+        Reservation reservation = new Reservation();
+        Customer customer;
+        List<Reservation> reservListByCustomer;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("************************************************************************");
+        System.out.println("**************************  DELETE RESERVATION   ***********************");
+        System.out.println("************************************************************************");
+        customer = customerPortal.checkCustomer();
+        if(customer==null)
+            userPortal.menu();
+        else if(!customerPortal.checkPassword(customer)) {
+            userPortal.menu();
+        }else {
+            reservListByCustomer =  reservation.getReserListByCustomer(customer);
+            int option;
+            do {
+                System.out.println("Please enter the reservation number of delete reservation ");
+                System.out.println("Or to Cancel please enter 0::");
+                option = scan.nextInt();
+                if (option < 0 || option > reservListByCustomer.size()) {
+                    System.out.println("Please correct number");
+                    option = scan.nextInt();
+                }
+            }while(option < 0 || option > reservListByCustomer.size());
+
+            if(option!=0) {
+                reservation.removeReservationBySsn(customer.getSSN());
+            }
+            reservation.getReserListByCustomer(customer);
+            userPortal.menu();
+        }
+    }
+
 
     public Car suggestAndSelectCar(String pickUpLocation, long rentDay) {
         Scanner scan = new Scanner(System.in);
@@ -157,5 +242,6 @@ public class ReservationPortal {
             return  null;
         }
     }
+
 
 }

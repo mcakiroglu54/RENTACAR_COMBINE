@@ -1,11 +1,10 @@
 package Runners;
 import BasicClasses.Customer;
+import BasicClasses.Reservation;
 
 import java.util.Scanner;
 
 public class CustomerPortal {
-
-    UserPortal userPortal = new UserPortal();
 
     public String enterValidSSN() {
         Scanner scan = new Scanner(System.in);
@@ -23,6 +22,7 @@ public class CustomerPortal {
         return ssn;
     }
     public Customer checkCustomer(){
+        UserPortal userPortal = new UserPortal();
         Customer customer = new Customer();
         String ssn;
         do{
@@ -78,22 +78,6 @@ public class CustomerPortal {
         return true;
     }
 
-    public void createTestCustomer() {
-        Customer c1 = new Customer("Mustafa", "Kenar", "111-11-1111","1234");
-        c1.setAddress("Mustafa kemal str.", "İzmir", "TR", "35100","TURKEY");
-        c1.setCreditCard("554923456789986", "Mustafa Kenar", "03/21", "456");
 
-        Customer c2 = new Customer("Ahmet", "Çalı", "134-45-3456","1234");
-        c2.setAddress("Happy street", "Arlington", "Texas", "66666","USA");
-        c2.setCreditCard("111123456789986", "Ahmet Çalı", "12/22", "222");
-
-        Customer c3 = new Customer("Helga", "Hans", "444-45-1111","1234");
-        c3.setAddress("ich mohte funf kofte str", "Köln", "NRV", "34567", "Germany");
-        c3.setCreditCard("222233344445566", "Helga Hans", "10/21", "241");
-        c1.addCustomer();
-        c2.addCustomer();
-        c3.addCustomer();
-
-    }
 
 }

@@ -1,15 +1,14 @@
 package Runners;
 
 import BasicClasses.Car;
+import BasicClasses.Reservation;
 
 public class Runner {
 	public static void main(String[] args) {
+		TestData testData = new TestData();
 		UserPortal userPortal = new UserPortal();
-		CustomerPortal customerPortal = new CustomerPortal();
-		CarPortal carPortal = new CarPortal();
-
-		customerPortal.createTestCustomer();
-		carPortal.createTestCar();
+		testData.createTestData();
+		Reservation.printAllReservation();
 		userPortal.menu();
 
 	}

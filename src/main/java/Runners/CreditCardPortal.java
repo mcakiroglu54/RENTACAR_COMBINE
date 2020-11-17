@@ -4,9 +4,8 @@ import java.util.Scanner;
 
 public class CreditCardPortal {
 
-    UserPortal userPortal = new UserPortal();
-
     public void enterCardNumber(Customer customer , String type ){
+        UserPortal userPortal = new UserPortal();
         String number;
         Scanner scan = new Scanner(System.in);
         do {

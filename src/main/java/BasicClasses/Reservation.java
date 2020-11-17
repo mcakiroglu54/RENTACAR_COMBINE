@@ -28,11 +28,15 @@ public class Reservation implements Serializable{
 	public Date getPickUpDate() { return pickUpDate; }
 	public void setPickUpDate(Date pickUpDate) { this.pickUpDate = pickUpDate; }
 	public Customer getCustomer() { return customer; }
-	public void setCustomer() { this.customer = customer; }
+	public void setCustomer(Customer customer) { this.customer = customer; }
 	public Car getCar() { return car; }
 	public void setCar(Car car) { this.car = car; }
 	public double getTotalPrice() { return totalPrice; }
 	public void setTotalPrice(double totalPrice) { this.totalPrice = totalPrice; }
+
+	public Reservation(){
+
+	}
 
 	public Reservation(Customer customer, Car car,String pickUpLocation, Date pickUpDate, Date returnDate, double totalPrice) {
 		this.reservationId = ++ID;
@@ -43,7 +47,7 @@ public class Reservation implements Serializable{
 		this.returnDate = returnDate;
 		this.totalPrice = totalPrice;
 	}
-	public static void printReservation() {
+	public static void printAllReservation() {
 		List<Reservation> reservationList = Reservation.takeReservationList();
 		for (Reservation w : reservationList) {
 			System.out.println("******************************************************");
@@ -54,8 +58,45 @@ public class Reservation implements Serializable{
 			System.out.println("TOTAL PRICE:$"+w.getTotalPrice());
 		}
 	}
-	public void add() {
+
+	public void printReservationInfo(Reservation reservation) {
+		System.out.println("******************************************************");
+		System.out.println("NAME:" + reservation.getCustomer().getFullName());
+		System.out.println("CAR:" + reservation.getCar().getMake() + " " + reservation.getCar().getPlate());
+		System.out.println("PICK UP DATE:" + reservation.getPickUpDate());
+		System.out.println("RETURN DATE " + reservation.getReturnDate());
+		System.out.println("TOTAL PRICE:$" + reservation.getTotalPrice());
+	}
+
+	public List<Reservation> getReserListByCustomer(Customer customer) {
 		List<Reservation> reservationList = Reservation.takeReservationList();
+		List <Reservation> reservListByCustomer = new ArrayList<>();
+		System.out.println("****************  YOUR RESERVATIONS  ****************");
+		int i=1;
+		for (Reservation w : reservationList) {
+			if(w.getCustomer().getSSN().equalsIgnoreCase(customer.getSSN())) {
+				reservListByCustomer.add(w);
+				System.out.println("**************** RESERVATIONS "+i+ "  ****************");
+				System.out.println("NAME:" + w.getCustomer().getFullName());
+				System.out.println("CAR:" + w.getCar().getMake() + " " + w.getCar().getPlate());
+				System.out.println("PICK UP DATE:" + w.getPickUpDate());
+				System.out.println("RETURN DATE " + w.getReturnDate());
+				System.out.println("TOTAL PRICE:$" + w.getTotalPrice());
+				i++;
+			}
+		}
+		return reservListByCustomer;
+	}
+
+	public void addReservation() {
+		List<Reservation> reservationList = Reservation.takeReservationList();
+
+		for(Reservation w: reservationList){
+			if (w.equals(this)) {
+				System.out.println("This reservation already exist..");
+				return;
+			}
+		}
 		reservationList.add(this);
 		File file = new File(filepath);
 		if (!file.exists()) {
@@ -86,30 +127,45 @@ public class Reservation implements Serializable{
 		}
 	}
 
-	public void Remove() {
-		List<Reservation> reservation = Reservation.takeReservationList();
-	}
+	public boolean removeReservationBySsn(String ssn) {
+		List<Reservation> reservationList = Reservation.takeReservationList();
 
+		boolean exist=false;
+		for (Reservation w : reservationList) {
+			if (w.getCustomer().getSSN().equals(ssn)) {
+				printReservationInfo(w);
+				reservationList.remove(w);
+				System.out.println("This Reservation was canceled:");
+				exist=true;
+				break;
+			}
+		}
+		if(!exist) {
+			System.out.println("the reservation doesn't exist");
+			return false;
+		}
 
-	public Reservation searchBySSN(String ssn) {
-		return null;
-
-	}
-
-
-	public static Reservation searchByPlate(String plate) {
-		return null;
-	}
-
-
-	public static List<Car> getReservedCars() {
-		List<Car> reservedCars = new ArrayList<>();
-		List<Reservation> reservation = Reservation.takeReservationList();
-		return reservedCars;
-	}
-
-	public static List<Car> getUnbookedCars() {
-	 return null;
+		// After removing an object we update the file by rewriting the list into that file.
+		ObjectOutputStream outputStream = null;
+		try {
+			outputStream = new ObjectOutputStream(new FileOutputStream(filepath));
+			for (Reservation w : reservationList) {
+				outputStream.writeObject(w);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					System.out.println(e);
+				}
+			}
+		}
+		return true;
 	}
 
 	public static List<Reservation> takeReservationList() {

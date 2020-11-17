@@ -71,6 +71,9 @@ public class CreditCard implements Serializable {
 
 	/*This method checks whether the given expiration date is valid or not.*/
 	public boolean isValidExpDate(String expDate) {
+
+		if (!expDate.contains("/"))
+			return false;
 		String s[] = expDate.split("/");
 		String expMonth= s[0];
 		String expYear = s[1];
