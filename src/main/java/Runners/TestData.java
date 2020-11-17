@@ -2,8 +2,6 @@ package Runners;
 import BasicClasses.Car;
 import BasicClasses.Customer;
 import BasicClasses.Reservation;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TestData {
@@ -39,7 +37,6 @@ public class TestData {
         car6.addCar();
         car7.addCar();
 
-  //    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date pickUpDate = new Date();
         Date returnDate = new Date();
         pickUpDate.setTime(24-12-2020);

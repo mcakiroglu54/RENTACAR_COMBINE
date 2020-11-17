@@ -91,6 +91,7 @@ public class Reservation implements Serializable{
 	public void addReservation() {
 		List<Reservation> reservationList = Reservation.takeReservationList();
 
+		//This part of code doesn't work
 		for(Reservation w: reservationList){
 			if (w.equals(this)) {
 				System.out.println("This reservation already exist..");

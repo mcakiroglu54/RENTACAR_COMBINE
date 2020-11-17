@@ -1,11 +1,8 @@
 package Runners;
 
-import BasicClasses.Address;
 import BasicClasses.Car;
 import BasicClasses.Customer;
 import BasicClasses.Reservation;
-
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,12 +12,8 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ReservationPortal {
-
-
     Date pickUpDate;
     Date returnDate;
-
-
     public void create() {
         CustomerPortal customerPortal = new CustomerPortal();
         UserPortal userPortal = new UserPortal();
@@ -67,7 +60,6 @@ public class ReservationPortal {
         System.out.println("Congrulation!!. Your Reservation was completed..");
         reservation.getReserListByCustomer(customer);
         userPortal.menu();
-
     }
 
     public void view() {

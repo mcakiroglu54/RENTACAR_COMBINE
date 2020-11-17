@@ -1,6 +1,5 @@
 package Runners;
 import BasicClasses.Customer;
-import BasicClasses.Reservation;
 
 import java.util.Scanner;
 
@@ -77,7 +76,5 @@ public class CustomerPortal {
         }while(!password.equals(customer.getPassword()));
         return true;
     }
-
-
 
 }

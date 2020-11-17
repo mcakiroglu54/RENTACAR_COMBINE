@@ -1,6 +1,4 @@
 package Runners;
-
-import BasicClasses.Car;
 import BasicClasses.Reservation;
 
 public class Runner {
@@ -10,9 +8,7 @@ public class Runner {
 		testData.createTestData();
 		Reservation.printAllReservation();
 		userPortal.menu();
-
 	}
-	
 }
 
 

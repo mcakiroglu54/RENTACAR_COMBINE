@@ -6,7 +6,6 @@ public class UserPortal {
 	public void menu() {
 		AccountPortal accountPortal = new AccountPortal();
 		ReservationPortal reservationPortal= new ReservationPortal();
-
 		Scanner scan = new Scanner(System.in);
 		System.out.println("************************************************************************");
 		System.out.println("*************************  TECHPRO RENT A CAR   ************************");
