@@ -19,12 +19,12 @@ public class ReservationPortal {
 
     Date pickUpDate;
     Date returnDate;
-    UserPortal userPortal = new UserPortal();
 
-    AccountPortal accountPortal = new AccountPortal();
 
     public void create() {
         CustomerPortal customerPortal = new CustomerPortal();
+        UserPortal userPortal = new UserPortal();
+        AccountPortal accountPortal = new AccountPortal();
         Car selectedCar;
         Reservation reservation;
         String pickUpLocation;
@@ -73,6 +73,7 @@ public class ReservationPortal {
     public void view() {
         String option=null;
         Scanner scan = new Scanner(System.in);
+        UserPortal userPortal = new UserPortal();
         System.out.println("************************************************************************");
         System.out.println("***************************  VIEW RESERVATION   ****************************");
         System.out.println("************************************************************************");
@@ -134,6 +135,7 @@ public class ReservationPortal {
     public void delete() {
         CustomerPortal customerPortal = new CustomerPortal();
         Reservation reservation = new Reservation();
+        UserPortal userPortal = new UserPortal();
         Customer customer;
         List<Reservation> reservListByCustomer;
         Scanner scan = new Scanner(System.in);
