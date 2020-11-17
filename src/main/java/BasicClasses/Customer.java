@@ -1,4 +1,4 @@
-package all;
+package BasicClasses;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +15,13 @@ public class Customer implements Serializable {
 	private String lastName;
 	private String SSN;
 	private String password;
-	protected CreditCardPortal creditCard;
-	protected Address address;
+	public CreditCard creditCard;
+	public Address address;
 	private static final String filepath="src/main/java/Customers.txt";
 
 	public Customer(){
 		address = new Address();
-		creditCard = new CreditCardPortal();
+		creditCard = new CreditCard();
 	}
 	public Customer(String firstName, String lastName, String ssn, String password ){
 		this.firstName = firstName;
@@ -30,13 +30,6 @@ public class Customer implements Serializable {
 		this.password = password;
 	}
 
-	public void setAddress(String streetAddr, String city, String state, String zip, String country){
-		address = new Address(streetAddr, city,state, zip,country);
-	}
-
-	public void setCreditCard(String cardNumber, String fullName, String expDate, String cvv) {
-		creditCard = new CreditCardPortal(cardNumber, fullName,expDate,cvv);
-	}
 	public String getPassword() {
 		return password;
 	}
@@ -55,16 +48,32 @@ public class Customer implements Serializable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 	public String getSSN() {
 		return SSN;
 	}
 	public void setSSN(String ssn) {
 		SSN = ssn;
 	}
+	public String getFullName() {
+		return firstName+" "+lastName;
+	}
+
+
+	public void setAddress(String streetAddr, String city, String state, String zip, String country){
+		address = new Address(streetAddr, city,state, zip,country);
+	}
+
+	public void setCreditCard(String cardNumber, String fullName, String expDate, String cvv) {
+		creditCard = new CreditCard(cardNumber, fullName,expDate,cvv);
+	}
 
 	public String toString() {
-		return firstName+" "+lastName+" "+" "+SSN+" "+password;
+		return "FullName: "+this.getFullName()+" SSN:"+this.SSN+
+				" "+this.creditCard.toString()+this.address.toString();
+	}
+
+	public void printCustomer(){
+		System.out.println(this.toString());
 	}
 	/*
 	 	The valid SSN (Social Security Number) must satisfy the following conditions:
@@ -74,7 +83,7 @@ public class Customer implements Serializable {
 		The second part should have 2 digits and it should be from 01 to 99.
 		The third part should have 4 digits and it should be from 0001 to 9999.
     */
-	public  boolean isSSNValid (String ssn) {
+	public static boolean isSSNValid (String ssn) {
 		if (ssn.length() != 11) {
 			return false;
 		}
@@ -143,11 +152,8 @@ public class Customer implements Serializable {
 
 	public boolean removeCustomerBySSN(String SSN) {
 		List<Customer> customerList = Customer.takeCustomerList();
-		System.out.println(customerList);
-		System.out.println(this.getSSN());
 		boolean exist=false;
 		for (Customer w : customerList) {
-			System.out.println(w.getSSN());
 			if (w.getSSN().equals(SSN)) {
 				customerList.remove(w);
 				System.out.println("Customer: " + SSN + " was removed:");
@@ -192,22 +198,22 @@ public class Customer implements Serializable {
 		}
 		return null;
 	}
-	public List<Customer> SearchByName(String name) {
+	public List<Customer> searchByName(String name) {
 		List<Customer> customerList = Customer.takeCustomerList();
-		List<Customer> s = new ArrayList<>();
+		List<Customer> searchedNameList = new ArrayList<>();
 		for (Customer w : customerList) {
-			if (w.getLastName().equalsIgnoreCase(name)) {
-				s.add(w);
+			if (w.getFullName().equalsIgnoreCase(name)) {
+				searchedNameList.add(w);
 			}
 		}
-		return s;
+		return searchedNameList;
 	}
 
 	public static List<Customer> takeCustomerList() {
 		List<Customer> CustomerList = new ArrayList<>();
 		ObjectInputStream inputStream = null;
 		try {
-			// open file for reading
+			// open the file for reading
 			inputStream = new ObjectInputStream(new FileInputStream(filepath));
 			boolean EOF = false;
 			// Keep reading file until file ends
