@@ -65,7 +65,6 @@ public class ReservationPortal {
 
     }
 
-
     public void view() {
         Scanner scan = new Scanner(System.in);
         System.out.println("************************************************************************");
@@ -93,8 +92,16 @@ public class ReservationPortal {
             return null;
         } else {
             Car.printCarListed(avalaibleCars, rentDay);
-            System.out.println("Which Car do you want to reserve:");
-            int selectedCar = scan.nextInt();
+            int selectedCar;
+            do {
+                System.out.println("Which Car do you want to reserve:");
+                selectedCar = scan.nextInt();
+                if (selectedCar < 0 || selectedCar > avalaibleCars.size()) {
+                    System.out.println("Please enter correct number or to exist enter 0");
+                    selectedCar = scan.nextInt();
+                }
+            }while(selectedCar < 0 || selectedCar > avalaibleCars.size());
+
             return avalaibleCars.get(selectedCar-1);
         }
     }

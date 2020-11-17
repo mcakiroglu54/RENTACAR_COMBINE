@@ -46,6 +46,7 @@ public class Reservation implements Serializable{
 	public static void printReservation() {
 		List<Reservation> reservationList = Reservation.takeReservationList();
 		for (Reservation w : reservationList) {
+			System.out.println("******************************************************");
 			System.out.println("NAME:"+w.getCustomer().getFullName());
 			System.out.println("CAR:"+w.getCar().getMake()+" "+ w.getCar().getPlate());
 			System.out.println("PICK UP DATE:"+w.getPickUpDate());
@@ -55,11 +56,6 @@ public class Reservation implements Serializable{
 	}
 	public void add() {
 		List<Reservation> reservationList = Reservation.takeReservationList();
-		for (Reservation w : reservationList) {
-			if (w.getReservationId() == this.reservationId) {
-				return;
-			}
-		}
 		reservationList.add(this);
 		File file = new File(filepath);
 		if (!file.exists()) {
